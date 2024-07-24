@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Spam Detection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Email Spam Detection</h2>
+        <form action="/predict" method="POST">
+            <div class="form-group">
+                <label for="email_text">Enter Email Text:</label>
+                <textarea class="form-control" id="email_text" name="email_text" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+        
+        {% if prediction_text %}
+            <div class="mt-4 alert alert-info">{{ prediction_text }}</div>
+            
+            <form action="/feedback" method="POST">
+                <input type="hidden" name="email_text" value="{{ email_text }}">
+                <input type="hidden" name="prediction" value="{{ prediction }}">
+                
+                <p>Was the prediction correct?</p>
+                <input type="radio" name="feedback" value="yes" id="feedback_yes" checked>
+                <label for="feedback_yes">Yes</label>
+                
+                <input type="radio" name="feedback" value="no" id="feedback_no">
+                <label for="feedback_no">No</label>
+                <br>
+                
+                <label for="reason">If not, what is the correct label?</label>
+                <select name="reason" id="reason">
+                    <option value="spam">Spam</option>
+                    <option value="ham">Ham</option>
+                </select>
+                <br>
+                
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
